@@ -68,10 +68,11 @@ export default {
     gotop () {
       clearInterval(this.timer2)
       this.timer2 = setInterval(() => {
-        const step = Math.floor((0 - this.scrollTop) / 10)
+        let sctop = this.getScrollTop()
+        const step = Math.floor((0 - sctop) / 10)
         if (step >= 0) clearInterval(this.timer2)
-        this.scrollTop += step
-        this.$refs.scroll.scrollTop = this.scrollTop
+        sctop += step
+        this.$refs.scroll.scrollTop = sctop
       }, 15)
 
     },
@@ -97,14 +98,13 @@ export default {
      * }
      */
     pullScrollUp () {
-      this.scrollTop = this.getScrollTop()
-      if (!this.showtop && this.scrollTop > 500) this.showtop = true
-      if (this.showtop && this.scrollTop <= 500) this.showtop = false
       if (!this.loadmore) return
       if (this.getBoxHeight() + this.getScrollTop() + 10 < this.getScrollHeight()) return
       this.$emit('pullUp')
     },
     pullUp () {
+      if (!this.showtop && this.getScrollTop() > 500) this.showtop = true
+      if (this.showtop && this.getScrollTop() <= 500) this.showtop = false
       if (this.timer) return
       if (this.listInfo.listlength === this.listInfo.total) return
       this.timer = setTimeout(() => {
