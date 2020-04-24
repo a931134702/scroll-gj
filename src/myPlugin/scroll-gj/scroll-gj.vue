@@ -1,12 +1,12 @@
 <template>
-  <div @scroll="pullUp" ref="scroll" class="scroll" @touchstart="moveStart" :style="'padding-top: '+padding+'px'">
+  <div @scroll="pullUp" class="scroll" @touchstart="moveStart" :style="'padding-top: '+padding+'px'">
     <div class="refresh" v-show="moveY >= 40" :style="'line-height: '+ padding +'px'">松开立即刷新</div>
     <div class="scroll-content" :style="'padding: '+innerpad+'px; box-sizing: border-box;'">
       <slot/>
     </div>
-    <img @click="gotop" v-show="showtop && backTop" class="backtop" src="http://zjdxcx.wiseljz.com/fe-images/top_ionic.png" alt="">
+    <img @click="gotop" v-show="showtop && backTop" class="backtop" src="./img/top_ionic.png" alt="">
     <div class="empty" v-show="listInfo && listInfo.finish && listInfo.total === 0">
-      <img class="empty-img" src="http://zjdxcx.wiseljz.com/fe-images/loading-empty.png" alt="">
+      <img class="empty-img" src="./img/loading-empty.png" alt="">
       <div class="empty-div">数据为空</div>
     </div>
     <div class="nomore" v-show="listInfo && listInfo.finish && listInfo.total > 0 && listInfo.total === listInfo.listlength">----------没有更多啦！----------</div>
@@ -71,21 +71,21 @@ export default {
         const step = Math.floor((0 - this.scrollTop) / 10)
         if (step >= 0) clearInterval(this.timer2)
         this.scrollTop += step
-        this.$refs.scroll.scrollTop = this.scrollTop
+        this.$el.scrollTop = this.scrollTop
       }, 15)
 
     },
     // 获取内容高度
     getScrollHeight () {
-      return this.$refs.scroll.scrollHeight
+      return this.$el.scrollHeight
     },
     // 获滚出内容高度
     getScrollTop () {
-      return this.$refs.scroll.scrollTop
+      return this.$el.scrollTop
     },
     //  获取盒子高度
     getBoxHeight () {
-      return this.$refs.scroll.offsetHeight
+      return this.$el.offsetHeight
     },
     /**
      * pullScrollUp  
@@ -117,11 +117,11 @@ export default {
      */
     moveStart (e) {
       if (!this.refresh) return
-      this.$refs.scroll.removeEventListener('touchend', this.movend)
+      this.$el.removeEventListener('touchend', this.movend)
       this.startY = e.touches[0].pageY
       // if (this.startY > 600) return
-      this.$refs.scroll.addEventListener('touchmove', this.moving)
-      this.$refs.scroll.addEventListener('touchend', this.movend)
+      this.$el.addEventListener('touchmove', this.moving)
+      this.$el.addEventListener('touchend', this.movend)
     },
     moving (e) {
       this.moveY = e.touches[0].pageY - this.startY
@@ -131,7 +131,7 @@ export default {
     movend () {
       this.moveY > 40 && this.$emit('pulldown')
       this.moveY = 0
-      this.$refs.scroll.removeEventListener('touchmove', this.moving)
+      this.$el.removeEventListener('touchmove', this.moving)
       clearInterval(this.timer1)
       this.timer1 = setInterval(() => {
         const step = Math.floor((0 - this.padding) / 10)
