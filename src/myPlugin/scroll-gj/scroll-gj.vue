@@ -1,6 +1,6 @@
 <template>
   <div @scroll="pullUp" class="scroll" @touchstart="moveStart" :style="'padding-top: '+padding+'px'" ref="scroll">
-    <div class="refresh" v-show="moveY >= 40" :style="'line-height: '+ padding +'px'">松开立即刷新</div>
+    <div class="refresh" v-show="padding >= 40" :style="'line-height: '+ padding +'px'">松开立即刷新</div>
     <div class="scroll-content" :style="'padding: '+innerpad+'px; box-sizing: border-box;'">
       <slot/>
     </div>
