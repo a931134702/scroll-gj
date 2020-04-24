@@ -1,5 +1,5 @@
 <template>
-  <div @scroll="pullUp" class="scroll" @touchstart="moveStart" :style="'padding-top: '+padding+'px'">
+  <div @scroll="pullUp" class="scroll" @touchstart="moveStart" :style="'padding-top: '+padding+'px'" ref="scroll">
     <div class="refresh" v-show="moveY >= 40" :style="'line-height: '+ padding +'px'">松开立即刷新</div>
     <div class="scroll-content" :style="'padding: '+innerpad+'px; box-sizing: border-box;'">
       <slot/>
@@ -71,21 +71,21 @@ export default {
         const step = Math.floor((0 - this.scrollTop) / 10)
         if (step >= 0) clearInterval(this.timer2)
         this.scrollTop += step
-        this.$el.scrollTop = this.scrollTop
+        this.$refs.scroll.scrollTop = this.scrollTop
       }, 15)
 
     },
     // 获取内容高度
     getScrollHeight () {
-      return this.$el.scrollHeight
+      return this.$refs.scroll.scrollHeight
     },
     // 获滚出内容高度
     getScrollTop () {
-      return this.$el.scrollTop
+      return this.$refs.scroll.scrollTop
     },
     //  获取盒子高度
     getBoxHeight () {
-      return this.$el.offsetHeight
+      return this.$refs.scroll.offsetHeight
     },
     /**
      * pullScrollUp  
@@ -116,12 +116,12 @@ export default {
      * 下拉刷新
      */
     moveStart (e) {
-      if (!this.refresh) return
-      this.$el.removeEventListener('touchend', this.movend)
+      if (!this.refresh || this.getScrollTop() > 0) return
+      this.$refs.scroll.removeEventListener('touchend', this.movend)
       this.startY = e.touches[0].pageY
       // if (this.startY > 600) return
-      this.$el.addEventListener('touchmove', this.moving)
-      this.$el.addEventListener('touchend', this.movend)
+      this.$refs.scroll.addEventListener('touchmove', this.moving)
+      this.$refs.scroll.addEventListener('touchend', this.movend)
     },
     moving (e) {
       this.moveY = e.touches[0].pageY - this.startY
@@ -131,7 +131,7 @@ export default {
     movend () {
       this.moveY > 40 && this.$emit('pulldown')
       this.moveY = 0
-      this.$el.removeEventListener('touchmove', this.moving)
+      this.$refs.scroll.removeEventListener('touchmove', this.moving)
       clearInterval(this.timer1)
       this.timer1 = setInterval(() => {
         const step = Math.floor((0 - this.padding) / 10)
