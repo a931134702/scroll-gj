@@ -4,9 +4,9 @@
     <div class="scroll-content" :style="'padding: '+innerpad+'px; box-sizing: border-box;'">
       <slot/>
     </div>
-    <img @click="gotop" v-show="showtop && backTop" class="backtop" src="./img/top_ionic.png" alt="">
+    <img @click="gotop" v-show="showtop && backTop" class="backtop" src="http://zjdxcx.wiseljz.com/fe-images/top_ionic.png" alt="">
     <div class="empty" v-show="listInfo && listInfo.finish && listInfo.total === 0">
-      <img class="empty-img" src="./img/loading-empty.png" alt="">
+      <img class="empty-img" src="http://zjdxcx.wiseljz.com/fe-images/loading-empty.png" alt="">
       <div class="empty-div">数据为空</div>
     </div>
     <div class="nomore" v-show="listInfo && listInfo.finish && listInfo.total > 0 && listInfo.total === listInfo.listlength">----------没有更多啦！----------</div>
