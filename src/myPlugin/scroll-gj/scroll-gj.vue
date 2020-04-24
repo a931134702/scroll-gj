@@ -151,8 +151,7 @@ export default {
   left: 0;
   right: 0;
   overflow-y: scroll;
-  background-color: #fff;
- 
+  background-color: #eee;
 }
 .scroll .nomore {
   text-align: center;
@@ -168,6 +167,9 @@ export default {
   font-size: 12px;
   color: #666;
   line-height: 40px;
+}
+.scroll .scroll-content {
+  background-color: #fff;
 }
 .scroll .empty {
   text-align: center;
