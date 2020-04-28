@@ -1,7 +1,7 @@
 {
   "name": "scroll-gj",
   "description": "A Vue.js project",
-  "version": "1.2.9",
+  "version": "1.3.0",
   "main": "dist/scrollGj.js",
   "author": "ljj <ljj@wiseljz.com>",
   "license": "MIT",

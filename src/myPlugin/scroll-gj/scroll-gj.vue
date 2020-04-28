@@ -158,6 +158,7 @@ export default {
   right: 0;
   overflow-y: scroll;
   background-color: #eee;
+  box-sizing: border-box;
  
 }
 .scroll .unfull {
