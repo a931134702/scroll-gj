@@ -1,6 +1,8 @@
 <template>
   <div @scroll="pullUp" class="scroll" :class="{'unfull': !fullWind}"  @touchstart="moveStart" :style="'padding-top: '+padding+'px'" ref="scroll">
-    <div class="refresh" v-show="padding >= 40" :style="'line-height: '+ padding +'px'">松开立即刷新</div>
+    <div class="refresh" v-show="moveY > 40 && padding > 40" :style="'line-height: '+ padding +'px'">松开立即刷新</div>
+    <div class="refresh" v-show="moveY === 0 && padding > 40 && !over" :style="'line-height: '+ padding +'px'">正在刷新数据...</div>
+    <div class="refresh" v-show="moveY === 0 && padding > 40 && over" :style="'line-height: '+ padding +'px'">数据刷新完成</div>
     <div class="scroll-content" :style="'padding: '+innerPad+'px; box-sizing: border-box;'">
       <slot/>
     </div>
@@ -60,7 +62,8 @@ export default {
       moveY: 0,
       padding: 0,
       showtop: false,
-      scrollTop: 0
+      scrollTop: 0,
+      over: false
     }
   },
 
@@ -134,15 +137,21 @@ export default {
       this.padding = this.moveY
     },
     movend () {
-      this.moveY > 40 && this.$emit('pullDown')
       this.moveY = 0
+      this.over = false
       this.$refs.scroll.removeEventListener('touchmove', this.moving)
+      this.padding > 40 && this.$emit('pullDown', { close: this.closePadding })
+    },
+    closePadding () {
+      this.over = true
       clearInterval(this.timer1)
-      this.timer1 = setInterval(() => {
-        const step = Math.floor((0 - this.padding) / 10)
-        if (step >= 0) clearInterval(this.timer1)
-        this.padding += step
-      }, 15)
+      setTimeout(() => {
+        this.timer1 = setInterval(() => {
+          const step = Math.floor((0 - this.padding) / 10)
+          if (step >= 0) clearInterval(this.timer1)
+          this.padding += step
+        }, 15)
+      }, 800)
     }
   }
 }
