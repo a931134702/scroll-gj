@@ -13,7 +13,7 @@
       <div class="empty-div">数据为空</div>
     </div>
     <div class="nomore" v-show="listInfo && listInfo.finish && listInfo.total > 0 && listInfo.total === listInfo.listlength">----------没有更多啦！----------</div>
-    <div id="preloader_1" v-show="listInfo && !listInfo.finish">
+    <div id="preloader_1" v-show="listInfo && !listInfo.finish && over">
       <span></span>
       <span></span>
       <span></span>
@@ -63,7 +63,7 @@ export default {
       padding: 0,
       showtop: false,
       scrollTop: 0,
-      over: false
+      over: true
     }
   },
 
@@ -141,8 +141,9 @@ export default {
       this.over = false
       this.$refs.scroll.removeEventListener('touchmove', this.moving)
       this.padding > 40 && this.$emit('pullDown', { close: this.closePadding })
+      this.padding <=40 && this.closePadding(0)
     },
-    closePadding () {
+    closePadding (time=800) {
       this.over = true
       clearInterval(this.timer1)
       setTimeout(() => {
@@ -151,7 +152,7 @@ export default {
           if (step >= 0) clearInterval(this.timer1)
           this.padding += step
         }, 15)
-      }, 800)
+      }, time)
     }
   }
 }
