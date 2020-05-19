@@ -114,7 +114,7 @@ export default {
       if (!this.showtop && this.getScrollTop() > 500) this.showtop = true
       if (this.showtop && this.getScrollTop() <= 500) this.showtop = false
       if (this.timer) return
-      if (this.listInfo.listlength === this.listInfo.total) return
+      if (this.listInfo.listlength === this.listInfo.total || !this.listInfo.finish) return
       this.timer = setTimeout(() => {
         this.pullScrollUp()
         this.timer = null
